@@ -1,3 +1,5 @@
+import 'package:emplanner/screens/register.dart';
+import 'package:emplanner/screens/sign_in.dart';
 import 'package:emplanner/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +59,19 @@ class WellcomeScreen extends StatelessWidget {
               const SizedBox(
                 height: 60,
               ),
-              MainButton(onPressed: () {}, title: 'Get Started'),
+              MainButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (ctx) => SignInScreen(),
+                    ));
+                  },
+                  title: Text(
+                    'Get Started',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white),
+                  )),
             ],
           ),
         ],

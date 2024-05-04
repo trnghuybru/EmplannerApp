@@ -6,17 +6,20 @@ class ComboTextField extends StatelessWidget {
     required this.title,
     required this.hintText,
     required this.isPassword,
+    required this.controller,
   });
 
   final String title;
   final String hintText;
   final bool isPassword;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           labelText: title,
           hintText: hintText,

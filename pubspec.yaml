@@ -36,6 +36,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   google_fonts: 6.1.0
+  riverpod: ^2.5.1
+  http: ^1.2.0
+  fl_chart: ^0.67.0
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +68,7 @@ flutter:
     - assets/images/wellcom_img.png
     - assets/images/shape.png
     - assets/images/logo.png
+    - assets/images/undraw_access_account_re_8spm 1.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
