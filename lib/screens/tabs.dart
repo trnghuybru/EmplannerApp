@@ -3,6 +3,7 @@ import 'package:emplanner/screens/dashboard.dart';
 import 'package:emplanner/screens/settings.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -33,12 +34,12 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activePage = DashboardScreen();
+    Widget activePage = const DashboardScreen();
 
     var activePageTitle = 'Dashboard';
 
     if (_selectedPageIndex == 1) {
-      activePage = CalendarScreen();
+      activePage = const CalendarScreen();
     }
 
     return Scaffold(

@@ -7,7 +7,7 @@ class SchoolClass {
     this.date,
     this.dayOfWeek,
     required this.startTime,
-    required this.endTime,
+    this.endTime,
   });
 
   final int id;
@@ -15,5 +15,5 @@ class SchoolClass {
   final DateTime? date;
   final String? dayOfWeek;
   final TimeOfDay startTime;
-  final TimeOfDay endTime;
+  final TimeOfDay? endTime;
 }

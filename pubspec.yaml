@@ -40,6 +40,9 @@ dependencies:
   http: ^1.2.0
   fl_chart: ^0.67.0
   shared_preferences: ^2.2.3
+  flutter_riverpod: ^2.5.1
+  intl: ^0.19.0
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +72,7 @@ flutter:
     - assets/images/shape.png
     - assets/images/logo.png
     - assets/images/undraw_access_account_re_8spm 1.png
+    - assets/images/leading_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
