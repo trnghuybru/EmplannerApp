@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:emplanner/screens/calendars.dart';
 import 'package:emplanner/screens/dashboard.dart';
 import 'package:emplanner/screens/settings.dart';
+import 'package:emplanner/screens/tasks.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,6 +45,10 @@ class _TabsScreenState extends State<TabsScreen> {
       activePage = const CalendarScreen();
     }
 
+    if (_selectedPageIndex == 2) {
+      activePage = const TasksScreen();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: activePageTitle == 'Dashboard'
@@ -53,6 +60,7 @@ class _TabsScreenState extends State<TabsScreen> {
                 ),
               )
             : Text(activePageTitle),
+        surfaceTintColor: Colors.transparent,
       ),
       endDrawer: MainDrawer(
         onSelectScreen: _setScreen,
