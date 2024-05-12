@@ -1,6 +1,6 @@
 import 'package:emplanner/screens/register.dart';
 import 'package:emplanner/screens/sign_in.dart';
-import 'package:emplanner/widgets/main_button.dart';
+import 'package:emplanner/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 
 class WellcomeScreen extends StatelessWidget {

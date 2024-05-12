@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:emplanner/screens/dashboard.dart';
 import 'package:emplanner/screens/tabs.dart';
 import 'package:emplanner/widgets/combo_text_field.dart';
-import 'package:emplanner/widgets/main_button.dart';
+import 'package:emplanner/widgets/buttons/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:emplanner/auth_service.dart';
 
