@@ -4,16 +4,16 @@ class Task {
   String? description;
   DateTime? endDate;
   int status;
-  String type;
+  String? type;
   int? examId;
   int courseId;
   String courseName;
-  String colorCode;
-  String semesterName;
-  DateTime semesterStartDate;
-  DateTime semesterEndDate;
-  DateTime schoolYearsStartDate;
-  DateTime schoolYearsEndDate;
+  String? colorCode;
+  String? semesterName;
+  DateTime? semesterStartDate;
+  DateTime? semesterEndDate;
+  DateTime? schoolYearsStartDate;
+  DateTime? schoolYearsEndDate;
 
   Task({
     required this.id,
@@ -21,16 +21,16 @@ class Task {
     this.description,
     this.endDate,
     required this.status,
-    required this.type,
+    this.type,
     this.examId,
     required this.courseId,
     required this.courseName,
-    required this.colorCode,
-    required this.semesterName,
-    required this.semesterStartDate,
-    required this.semesterEndDate,
-    required this.schoolYearsStartDate,
-    required this.schoolYearsEndDate,
+    this.colorCode,
+    this.semesterName,
+    this.semesterStartDate,
+    this.semesterEndDate,
+    this.schoolYearsStartDate,
+    this.schoolYearsEndDate,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
@@ -50,24 +50,5 @@ class Task {
       schoolYearsStartDate: DateTime.parse(json['school_years_start_date']),
       schoolYearsEndDate: DateTime.parse(json['school_years_end_date']),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'task_name': taskName,
-      'description': description,
-      'end_date': endDate!.toIso8601String(),
-      'status': status,
-      'type': type,
-      'course_id': courseId,
-      'course_name': courseName,
-      'color_code': colorCode,
-      'semester_name': semesterName,
-      'semester_start_date': semesterStartDate.toIso8601String(),
-      'semester_end_date': semesterEndDate.toIso8601String(),
-      'school_years_start_date': schoolYearsStartDate.toIso8601String(),
-      'school_years_end_date': schoolYearsEndDate.toIso8601String(),
-    };
   }
 }

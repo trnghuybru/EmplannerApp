@@ -30,7 +30,7 @@ class TaskItem extends StatelessWidget {
           Container(
             width: 18,
             decoration: BoxDecoration(
-              color: hexToColor(task.colorCode),
+              color: hexToColor(task.colorCode!),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 bottomLeft: Radius.circular(20),

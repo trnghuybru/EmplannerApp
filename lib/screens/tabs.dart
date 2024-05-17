@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:emplanner/screens/calendars.dart';
 import 'package:emplanner/screens/dashboard.dart';
 import 'package:emplanner/screens/settings.dart';
 import 'package:emplanner/screens/tasks.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -17,6 +14,7 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
+  late Widget activePage;
 
   void _selectPage(int index) {
     setState(() {
@@ -24,29 +22,44 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-// Ham chuyen doi man hinh Drawer
   void _setScreen(String indentifier) {
     Navigator.of(context).pop();
     //man hinh setting
     if (indentifier == 'settings') {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (ctx) => SettingsScreen()));
+      print("setting");
+      setState(() {
+        activePage = const SettingsScreen();
+      });
     }
     //man hinh schedules
   }
 
   @override
-  Widget build(BuildContext context) {
-    Widget activePage = const DashboardScreen();
+  void initState() {
+    super.initState();
+    activePage = const DashboardScreen();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     var activePageTitle = 'Dashboard';
 
+    if (_selectedPageIndex == 0) {
+      setState(() {
+        activePage = const DashboardScreen();
+      });
+    }
+
     if (_selectedPageIndex == 1) {
-      activePage = const CalendarScreen();
+      setState(() {
+        activePage = const CalendarScreen();
+      });
     }
 
     if (_selectedPageIndex == 2) {
-      activePage = const TasksScreen();
+      setState(() {
+        activePage = const TasksScreen();
+      });
     }
 
     return Scaffold(
