@@ -1,7 +1,9 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:emplanner/models/course.dart';
 import 'package:emplanner/providers/courses_provider.dart';
+import 'package:emplanner/providers/dashboard_provider.dart';
 import 'package:emplanner/providers/tasks_provider.dart';
+import 'package:emplanner/services/task_service.dart';
 import 'package:emplanner/widgets/add_task_bottom_sheet.dart';
 import 'package:emplanner/widgets/buttons/secondary_buttons.dart';
 import 'package:emplanner/widgets/task_item.dart';
@@ -20,6 +22,10 @@ class TasksScreen extends ConsumerWidget {
       builder: (context) => NewTaskBottomSheet(courses: course),
       constraints: const BoxConstraints(maxWidth: double.infinity),
     );
+  }
+
+  void _deleteTask(String id) async {
+    await TaskServices().deleteTask(id);
   }
 
   @override
@@ -192,7 +198,16 @@ class TasksScreen extends ConsumerWidget {
                             );
                           }
                         },
-                        onDismissed: (direction) {},
+                        onDismissed: (direction) async {
+                          if (direction == DismissDirection.startToEnd) {
+                          } else {
+                            _deleteTask(data[index].id.toString());
+                            ref.refresh(dashboardDetailProvider);
+                            await ref
+                                .read(tasksStateNotifierProvider.notifier)
+                                .fetchTasks();
+                          }
+                        },
                         child: TaskItem(task: data[index]),
                       );
                     },
