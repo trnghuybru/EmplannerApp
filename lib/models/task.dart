@@ -51,4 +51,24 @@ class Task {
       schoolYearsEndDate: DateTime.parse(json['school_years_end_date']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'task_name': taskName,
+      'description': description,
+      'end_date': endDate?.toIso8601String(),
+      'status': status,
+      'type': type,
+      'exam_id': examId,
+      'course_id': courseId,
+      'course_name': courseName,
+      'color_code': colorCode,
+      'semester_name': semesterName,
+      'semester_start_date': semesterStartDate?.toIso8601String(),
+      'semester_end_date': semesterEndDate?.toIso8601String(),
+      'school_years_start_date': schoolYearsStartDate?.toIso8601String(),
+      'school_years_end_date': schoolYearsEndDate?.toIso8601String(),
+    };
+  }
 }

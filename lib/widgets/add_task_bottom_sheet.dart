@@ -27,7 +27,7 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
   DateTime? _selectedDate;
 
   Future<void> saveTask(NewTask task) async {
-    await TaskServices().saveTask(task);
+    await TaskServices.saveTask(task);
     ref.refresh(dashboardDetailProvider);
     await ref.read(tasksStateNotifierProvider.notifier).fetchTasks();
   }
@@ -94,8 +94,7 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
                           const EdgeInsets.symmetric(horizontal: 16.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18.0),
-                        borderSide: const BorderSide(
-                            color: Colors.grey), // Color of the border
+                        borderSide: BorderSide.none,
                       ),
                       filled: true,
                       fillColor: Colors.grey[200], // Background color
@@ -113,8 +112,9 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
                           vertical: 12, horizontal: 12),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide.none,
                       ),
-                      fillColor: const Color.fromARGB(148, 238, 238, 238),
+                      fillColor: Colors.grey[200],
                       filled: true,
                     ),
                     controller: _titleController,
@@ -149,8 +149,9 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
                         prefixIcon: const Icon(Icons.calendar_month_rounded),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
+                          borderSide: BorderSide.none,
                         ),
-                        fillColor: const Color.fromARGB(148, 238, 238, 238),
+                        fillColor: Colors.grey[200],
                         filled: true,
                         contentPadding:
                             const EdgeInsets.symmetric(vertical: 12)),
@@ -188,8 +189,7 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
                           const EdgeInsets.symmetric(horizontal: 16.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18.0),
-                        borderSide: const BorderSide(
-                            color: Colors.grey), // Color of the border
+                        borderSide: BorderSide.none, // Color of the border
                       ),
                       filled: true,
                       fillColor: Colors.grey[200], // Background color
@@ -207,8 +207,9 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
                           vertical: 12, horizontal: 12),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide.none,
                       ),
-                      fillColor: const Color.fromARGB(148, 238, 238, 238),
+                      fillColor: Colors.grey[200],
                       filled: true,
                     ),
                     maxLines: null,

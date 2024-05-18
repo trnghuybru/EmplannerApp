@@ -13,24 +13,31 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
-    Duration remainingTime = task.endDate!.difference(now);
-    String formattedDate = DateFormat('MM/dd').format(task.endDate!);
+    DateTime endDate =
+        DateTime(task.endDate!.year, task.endDate!.month, task.endDate!.day);
+    DateTime today = DateTime(now.year, now.month, now.day);
+    Duration remainingTime = endDate.difference(today);
+    String formattedDate = DateFormat('MM/dd').format(endDate);
     String daysLeft = remainingTime.inDays.toString();
     String daysLeftString = daysLeft == '1' ? '1 day' : '$daysLeft days';
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       height: 112,
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 242, 243, 255),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+      decoration: BoxDecoration(
+        color: task.status == 0
+            ? const Color.fromARGB(255, 242, 243, 255)
+            : Colors.grey[300],
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
       child: Row(
         children: [
           Container(
             width: 18,
             decoration: BoxDecoration(
-              color: hexToColor(task.colorCode!),
+              color: task.status == 0
+                  ? hexToColor(task.colorCode!)
+                  : Colors.grey[400],
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 bottomLeft: Radius.circular(20),
@@ -54,8 +61,10 @@ class TaskItem extends StatelessWidget {
                         children: [
                           Text(
                             task.taskName,
-                            style: const TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0),
+                            style: TextStyle(
+                              color: task.status == 0
+                                  ? const Color.fromARGB(255, 0, 0, 0)
+                                  : const Color.fromARGB(255, 113, 113, 113),
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -85,9 +94,18 @@ class TaskItem extends StatelessWidget {
                       const Icon(Icons.access_time_rounded, size: 15),
                       const SizedBox(width: 5),
                       Text(
-                        '$formattedDate $daysLeftString left',
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 113, 113, 113),
+                        remainingTime.inDays == 0
+                            ? '$formattedDate |  Today'
+                            : remainingTime.inDays < 0
+                                ? '$formattedDate |  Overdue'
+                                : '$formattedDate |  $daysLeftString left',
+                        style: TextStyle(
+                          color: remainingTime.inDays == 0
+                              ? Colors.green // Màu xanh cho "Today"
+                              : remainingTime.inDays < 0
+                                  ? Colors.red // Màu đỏ cho "Overdue"
+                                  : const Color.fromARGB(255, 113, 113,
+                                      113), // Màu mặc định cho trường hợp khác
                           fontSize: 12.0,
                           fontWeight: FontWeight.bold,
                         ),

@@ -58,6 +58,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
     if (_selectedPageIndex == 2) {
       setState(() {
+        activePageTitle = 'Task';
         activePage = const TasksScreen();
       });
     }
@@ -72,7 +73,18 @@ class _TabsScreenState extends State<TabsScreen> {
                   child: Image.asset('assets/images/logo.png'),
                 ),
               )
-            : Text(activePageTitle),
+            : Row(
+                children: [
+                  Image.asset('assets/images/icon_logo.png'),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(activePageTitle,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          )),
+                ],
+              ),
         surfaceTintColor: Colors.transparent,
       ),
       endDrawer: MainDrawer(
