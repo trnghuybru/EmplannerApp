@@ -101,7 +101,9 @@ class TaskItem extends StatelessWidget {
                                 : '$formattedDate |  $daysLeftString left',
                         style: TextStyle(
                           color: remainingTime.inDays == 0
-                              ? Colors.green // Màu xanh cho "Today"
+                              ? task.status == 1
+                                  ? Colors.grey
+                                  : Colors.green
                               : remainingTime.inDays < 0
                                   ? Colors.red // Màu đỏ cho "Overdue"
                                   : const Color.fromARGB(255, 113, 113,

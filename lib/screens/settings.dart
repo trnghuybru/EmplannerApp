@@ -14,11 +14,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: O3D.asset(
-        src: 'assets/model.glb',
-        controller: o3dController,
-        autoPlay: true,
-      ),
-    );
+        // child: O3D.asset(
+        //   src: 'assets/model.glb',
+        //   controller: o3dController,
+        //   autoPlay: true,
+        // ),
+        );
   }
 }

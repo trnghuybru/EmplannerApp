@@ -58,10 +58,6 @@ class _TaskDialogState extends ConsumerState<TaskDialog> {
       );
       TaskServices.updateTask(widget.task.id.toString(), task);
     }
-
-    // Cap nhat lai giao dien DashBoard
-    //todo
-    //
   }
 
   @override

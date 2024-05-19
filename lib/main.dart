@@ -23,6 +23,8 @@ class App extends StatelessWidget {
           surface: const Color.fromARGB(255, 255, 255, 255),
         ),
         textTheme: GoogleFonts.poppinsTextTheme(),
+        scaffoldBackgroundColor: Colors.white,
+        canvasColor: Colors.white,
       ),
       home: const SignInScreen(),
     );

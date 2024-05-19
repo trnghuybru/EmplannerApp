@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:emplanner/models/course.dart';
 import 'package:emplanner/models/new_task.dart';
@@ -128,130 +130,163 @@ class TasksScreen extends ConsumerWidget {
         Expanded(
           child: SizedBox(
             height: 200,
-            child: ListView.builder(
-              itemCount: filteredTasks.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: courses.when(
-                      data: (courses) {
-                        return () {
-                          _showPopupDialog(context,
-                              filteredTasks[index].id.toString(), courses);
-                        };
-                      },
-                      error: (e, r) {
-                        return () {};
-                      },
-                      loading: () => () {}),
-                  child: Dismissible(
-                    key: ValueKey(filteredTasks[index].id),
-                    direction: DismissDirection.horizontal,
-                    background: Container(
-                      color: Colors.green,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.only(left: 20),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.check, color: Colors.white),
-                          SizedBox(width: 10),
-                          Text(
-                            'Complete',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    secondaryBackground: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: 20),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Delete',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(Icons.cancel, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    confirmDismiss: (direction) async {
-                      if (direction == DismissDirection.startToEnd) {
-                        // Handle the complete action
-                        return await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Complete Task'),
-                              content: const Text(
-                                  'Are you sure you want to mark this task as complete?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    // Perform complete action here, e.g., update the task status
-                                    Navigator.of(context).pop(true);
-                                  },
-                                  child: const Text('Complete'),
+            child: filteredTasks.isEmpty
+                ? const Center(child: Text("No tasks were found."))
+                : ListView.builder(
+                    itemCount: filteredTasks.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: courses.when(
+                            data: (courses) {
+                              return () {
+                                _showPopupDialog(
+                                    context,
+                                    filteredTasks[index].id.toString(),
+                                    courses);
+                              };
+                            },
+                            error: (e, r) {
+                              return () {};
+                            },
+                            loading: () => () {}),
+                        child: Dismissible(
+                          key: UniqueKey(),
+                          direction: DismissDirection.horizontal,
+                          background: Container(
+                            color: Colors.green,
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Row(
+                              children: [
+                                filteredTasks[index].status == 0
+                                    ? const Icon(Icons.check,
+                                        color: Colors.white)
+                                    : const Icon(Icons.unpublished_outlined,
+                                        color: Colors.white),
+                                const SizedBox(width: 10),
+                                Text(
+                                  filteredTasks[index].status == 0
+                                      ? 'Done'
+                                      : 'Undone',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
-                            );
-                          },
-                        );
-                      } else {
-                        return await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Delete Task'),
-                              content: const Text(
-                                  'Are you sure you want to delete this task?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  child: const Text('Cancel'),
+                            ),
+                          ),
+                          secondaryBackground: Container(
+                            color: Colors.red,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 20),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    // Perform delete action here, e.g., remove the task from the database
-                                    Navigator.of(context).pop(true);
-                                  },
-                                  child: const Text('Delete'),
-                                ),
+                                SizedBox(width: 10),
+                                Icon(Icons.cancel, color: Colors.white),
                               ],
-                            );
+                            ),
+                          ),
+                          confirmDismiss: (direction) async {
+                            if (direction == DismissDirection.startToEnd) {
+                              // Handle the complete action
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(filteredTasks[index].status == 0
+                                        ? 'Done Task'
+                                        : 'Undone Task'),
+                                    content: Text(filteredTasks[index].status ==
+                                            0
+                                        ? 'Are you sure you want to mark this task as done?'
+                                        : 'Are you sure you want to mark this task as undone'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          // Perform complete action here, e.g., update the task status
+                                          Navigator.of(context).pop(true);
+                                        },
+                                        child: Text(
+                                            filteredTasks[index].status == 0
+                                                ? 'Done'
+                                                : 'Undone'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Delete Task'),
+                                    content: const Text(
+                                        'Are you sure you want to delete this task?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          // Perform delete action here, e.g., remove the task from the database
+                                          Navigator.of(context).pop(true);
+                                        },
+                                        child: const Text('Delete'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
-                        );
-                      }
+                          onDismissed: (direction) async {
+                            if (direction == DismissDirection.startToEnd) {
+                              NewTask task = NewTask(
+                                courseId: filteredTasks[index].courseId,
+                                name: filteredTasks[index].taskName,
+                                startDate: DateTime.now(),
+                                endDate: filteredTasks[index].endDate!,
+                                type: filteredTasks[index].type!,
+                                status:
+                                    filteredTasks[index].status == 0 ? 1 : 0,
+                                description: filteredTasks[index].description,
+                              );
+                              TaskServices.updateTask(
+                                  filteredTasks[index].id.toString(), task);
+                              await ref
+                                  .read(tasksStateNotifierProvider.notifier)
+                                  .fetchTasks();
+                              ref.refresh(dashboardDetailProvider);
+                            } else {
+                              _deleteTask(filteredTasks[index].id.toString());
+                              ref.refresh(dashboardDetailProvider);
+                              await ref
+                                  .read(tasksStateNotifierProvider.notifier)
+                                  .fetchTasks();
+                            }
+                          },
+                          child: TaskItem(task: filteredTasks[index]),
+                        ),
+                      );
                     },
-                    onDismissed: (direction) async {
-                      if (direction == DismissDirection.startToEnd) {
-                      } else {
-                        _deleteTask(filteredTasks[index].id.toString());
-                        ref.refresh(dashboardDetailProvider);
-                        await ref
-                            .read(tasksStateNotifierProvider.notifier)
-                            .fetchTasks();
-                      }
-                    },
-                    child: TaskItem(task: filteredTasks[index]),
                   ),
-                );
-              },
-            ),
           ),
         ),
       ],

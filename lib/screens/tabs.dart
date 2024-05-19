@@ -52,6 +52,7 @@ class _TabsScreenState extends State<TabsScreen> {
 
     if (_selectedPageIndex == 1) {
       setState(() {
+        activePageTitle = 'Calendar';
         activePage = const CalendarScreen();
       });
     }
@@ -64,7 +65,9 @@ class _TabsScreenState extends State<TabsScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: activePageTitle == 'Dashboard'
             ? Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),

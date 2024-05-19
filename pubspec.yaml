@@ -45,6 +45,7 @@ dependencies:
   carousel_slider: ^4.2.1
   date_picker_timeline: ^1.2.6
   o3d: ^3.1.0
+  syncfusion_flutter_calendar: ^25.2.4
   
 
 dev_dependencies:
@@ -77,7 +78,6 @@ flutter:
     - assets/images/undraw_access_account_re_8spm 1.png
     - assets/images/leading_icon.png
     - assets/images/icon_logo.png
-    - assets/model.glb
   
 
   # An image asset can refer to one or more resolution-specific "variants", see
