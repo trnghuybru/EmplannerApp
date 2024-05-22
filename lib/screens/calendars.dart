@@ -1,4 +1,5 @@
 import 'package:emplanner/providers/calendar_provider.dart';
+import 'package:emplanner/widgets/class_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -17,36 +18,17 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   final List<bool> _selectedView = <bool>[true, false, false];
   final CalendarController _controller = CalendarController();
 
-  Future<dynamic> showDetailClass(
-      BuildContext context, Appointment appointment) {
+  Future<dynamic> showDetailClass(BuildContext context, CalendarClass cl) {
     return showDialog(
         context: context,
         builder: (ctx) {
-          return AlertDialog(
-            title: Text(appointment.subject),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Start Time: ${appointment.startTime}'),
-                Text('End Time: ${appointment.endTime}'),
-                Text('Description: ${appointment.notes ?? "No description"}')
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Close'),
-              )
-            ],
-          );
+          return ClassDialog(caclass: cl);
         });
   }
 
   @override
   Widget build(BuildContext context) {
-    final classList = ref.watch(calendarDataProvider);
+    final classList = ref.watch(classFutureProvider);
 
     if (_selectedView[0]) {
       _controller.view = CalendarView.day;
@@ -136,7 +118,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                       CalendarElement.appointment) {
                     final Appointment appointment =
                         calendarTapDetails.appointments!.first;
-                    showDetailClass(context, appointment);
+                    final clclass = classList.where((cl) {
+                      return cl.id.toString() == appointment.notes;
+                    }).first;
+                    showDetailClass(context, clclass);
                   }
                 },
               ),
@@ -172,7 +157,7 @@ List<Appointment> getAppointments(List<CalendarClass> classList) {
       subject: cl.courseName,
       location: cl.room,
       notes: cl.id.toString(),
-      color: hexToColor(cl.colorCode),
+      color: hexToColor(cl.colorCode!),
     ));
   }
 

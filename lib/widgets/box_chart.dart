@@ -120,7 +120,7 @@ class BoxTaskChart extends ConsumerWidget {
                         height: 65,
                         width: 65,
                         decoration: const BoxDecoration(
-                          color: Color.fromARGB(0, 255, 255, 255),
+                          color: Colors.transparent,
                           shape: BoxShape.circle,
                         ),
                         child: Center(

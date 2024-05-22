@@ -16,7 +16,7 @@ class AuthService {
   Future<http.Response> login(String email, String password) async {
     try {
       var res = await http.post(
-        Uri.http(baseUrl, 'api/login'),
+        Uri.parse('http://10.0.2.2:8000/api/login'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

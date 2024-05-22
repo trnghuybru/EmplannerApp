@@ -50,7 +50,7 @@ class WellcomeScreen extends StatelessWidget {
                         fontSize: 16,
                         color: Theme.of(context)
                             .colorScheme
-                            .onBackground
+                            .onSurface
                             .withAlpha(190),
                       ),
                   textAlign: TextAlign.center,

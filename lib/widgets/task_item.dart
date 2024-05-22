@@ -72,7 +72,7 @@ class TaskItem extends StatelessWidget {
                           Text(
                             task.courseName,
                             style: const TextStyle(
-                              color: Color.fromARGB(255, 113, 113, 113),
+                              color: Color.fromARGB(255, 24, 10, 10),
                               fontSize: 12.0,
                               fontWeight: FontWeight.normal,
                             ),

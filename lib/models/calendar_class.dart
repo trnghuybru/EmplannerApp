@@ -8,7 +8,7 @@ class CalendarClass {
   final String endTime;
   final String courseName;
   final String teacher;
-  final String colorCode;
+  final String? colorCode;
 
   CalendarClass({
     required this.id,
@@ -20,7 +20,7 @@ class CalendarClass {
     required this.endTime,
     required this.courseName,
     required this.teacher,
-    required this.colorCode,
+    this.colorCode,
   });
 
   factory CalendarClass.fromJson(Map<String, dynamic> json) {

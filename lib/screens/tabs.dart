@@ -1,5 +1,6 @@
 import 'package:emplanner/screens/calendars.dart';
 import 'package:emplanner/screens/dashboard.dart';
+import 'package:emplanner/screens/schedules.dart';
 import 'package:emplanner/screens/settings.dart';
 import 'package:emplanner/screens/tasks.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
@@ -61,6 +62,13 @@ class _TabsScreenState extends State<TabsScreen> {
       setState(() {
         activePageTitle = 'Task';
         activePage = const TasksScreen();
+      });
+    }
+
+    if (_selectedPageIndex == 3) {
+      setState(() {
+        activePageTitle = 'Schedules';
+        activePage = const SchedulesScreen();
       });
     }
 

@@ -22,7 +22,9 @@ class App extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 250, 187, 24),
           surface: const Color.fromARGB(255, 255, 255, 255),
         ),
-        textTheme: GoogleFonts.poppinsTextTheme(),
+        bottomSheetTheme:
+            const BottomSheetThemeData(backgroundColor: Colors.white),
+        textTheme: GoogleFonts.quicksandTextTheme(),
         scaffoldBackgroundColor: Colors.white,
         canvasColor: Colors.white,
       ),
