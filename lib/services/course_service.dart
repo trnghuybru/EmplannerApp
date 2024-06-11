@@ -5,7 +5,7 @@ import 'package:emplanner/models/course.dart';
 import 'package:http/http.dart' as http;
 
 class CoursesServices {
-  Future<List<Course>> getCourses() async {
+  static Future<List<Course>> getCourses() async {
     String? token = await AuthService.getToken();
 
     try {
@@ -30,7 +30,7 @@ class CoursesServices {
     }
   }
 
-  List<Course> _parseCourseList(String responseBody) {
+  static List<Course> _parseCourseList(String responseBody) {
     final parsed = json.decode(responseBody)['data'] as List<dynamic>;
     return parsed
         .map<Course>((json) => Course(

@@ -1,12 +1,22 @@
+import 'package:emplanner/providers/courses_provider.dart';
+import 'package:emplanner/providers/schedule_provider.dart';
 import 'package:emplanner/widgets/course_item.dart';
 import 'package:emplanner/widgets/semester_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
-class SchedulesScreen extends StatelessWidget {
+class SchedulesScreen extends ConsumerWidget {
   const SchedulesScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final semesters = ref.watch(semesterFutureProvider);
+    final courses = ref.watch(coursesFutureProvider);
+
+    final dateFormat = DateFormat.yMd();
+    final currentDate = DateTime.now();
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -30,25 +40,37 @@ class SchedulesScreen extends StatelessWidget {
                     'See All',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 61, 143, 239)),
+                        color: const Color.fromARGB(255, 61, 143, 239)),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(
-            height: 300,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return SemesterCard(
-                    semesterName: 'Samestername',
-                    dateRange: '04/30/2024 - 06/30/2024',
-                    daysLeft: 7,
-                    onTap: () {},
-                  );
-                }),
+          semesters.when(
+            data: (semesters) {
+              return SizedBox(
+                height: 300,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: semesters.length,
+                    itemBuilder: (context, index) {
+                      return SemesterCard(
+                        semesterName: semesters[index].name,
+                        dateRange:
+                            '${dateFormat.format(semesters[index].startDate)} - ${dateFormat.format(semesters[index].endDate)}',
+                        daysLeft: semesters[index]
+                            .endDate
+                            .difference(currentDate)
+                            .inDays,
+                        onTap: () {},
+                      );
+                    }),
+              );
+            },
+            error: (e, r) => throw Exception(),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -70,19 +92,38 @@ class SchedulesScreen extends StatelessWidget {
                     'Filter',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 61, 143, 239)),
+                        color: const Color.fromARGB(255, 61, 143, 239)),
                   ),
                 ),
               ],
             ),
           ),
-          ListView.builder(
-              shrinkWrap: true, // Add this line
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return CourseItem();
-              })
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: courses.when(
+              data: (courses) {
+                return ListView.builder(
+                    shrinkWrap: true, // Add this line
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: courses.length,
+                    itemBuilder: (context, index) {
+                      return CourseItem(
+                        courseName: courses[index].name,
+                        dateRange:
+                            '${dateFormat.format(courses[index].startDate)} - ${dateFormat.format(courses[index].endDate)}',
+                        dayLeft: courses[index]
+                            .endDate
+                            .difference(currentDate)
+                            .inDays,
+                      );
+                    });
+              },
+              error: (e, r) => throw Exception(),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CourseItem extends StatelessWidget {
-  const CourseItem({super.key});
+class CourseItem extends ConsumerWidget {
+  const CourseItem({
+    super.key,
+    required this.courseName,
+    required this.dateRange,
+    required this.dayLeft,
+  });
+  final String courseName;
+  final String dateRange;
+  final int dayLeft;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return Container(
       height: 120,
       width: 350,
@@ -33,15 +42,15 @@ class CourseItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'semesterName',
+                  Text(
+                    courseName,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'dateRange',
+                    dateRange,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey[600],
@@ -50,9 +59,9 @@ class CourseItem extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              const Text(
-                'In-progress',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+              Text(
+                dayLeft <= 0 ? 'Ended Course' : 'In-progress',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],
           ),

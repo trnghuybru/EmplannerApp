@@ -5,6 +5,7 @@ import 'package:emplanner/screens/settings.dart';
 import 'package:emplanner/screens/tasks.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -74,6 +75,11 @@ class _TabsScreenState extends State<TabsScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: activePageTitle == 'Schedules'
+          ? const SpeedDial(
+              animatedIcon: AnimatedIcons.menu_close,
+            )
+          : null,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: activePageTitle == 'Dashboard'

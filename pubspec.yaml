@@ -46,6 +46,7 @@ dependencies:
   date_picker_timeline: ^1.2.6
   o3d: ^3.1.0
   syncfusion_flutter_calendar: ^24.1.46
+  flutter_speed_dial: ^7.0.0
   
 
 dev_dependencies:

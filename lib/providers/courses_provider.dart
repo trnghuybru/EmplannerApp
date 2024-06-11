@@ -6,8 +6,7 @@ class CoursesNotifier extends StateNotifier<List<Course>> {
   CoursesNotifier() : super(const []);
 
   Future<void> fetchTasks() async {
-    final courseServices = CoursesServices();
-    state = await courseServices.getCourses();
+    state = await CoursesServices.getCourses();
   }
 }
 

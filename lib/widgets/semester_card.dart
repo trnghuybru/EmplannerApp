@@ -64,7 +64,7 @@ class SemesterCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  '$daysLeft days left',
+                  daysLeft < 0 ? 'Ended Semester' : '$daysLeft days left',
                   style: const TextStyle(
                     color: Colors.blue, // Match the text color
                     fontSize: 13, // Adjust the font size as needed
