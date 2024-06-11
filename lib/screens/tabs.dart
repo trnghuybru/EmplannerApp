@@ -3,7 +3,9 @@ import 'package:emplanner/screens/dashboard.dart';
 import 'package:emplanner/screens/schedules.dart';
 import 'package:emplanner/screens/settings.dart';
 import 'package:emplanner/screens/tasks.dart';
+import 'package:emplanner/widgets/edit_year_dialog.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
+import 'package:emplanner/widgets/new_year_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -76,8 +78,66 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: activePageTitle == 'Schedules'
-          ? const SpeedDial(
-              animatedIcon: AnimatedIcons.menu_close,
+          ? SpeedDial(
+              animatedIcon: AnimatedIcons.add_event,
+              spacing: 8,
+              spaceBetweenChildren: 8,
+              children: [
+                SpeedDialChild(
+                  shape: const CircleBorder(side: BorderSide.none),
+                  child: const CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 250, 187, 24),
+                    child: Icon(Icons.school, color: Colors.white),
+                  ),
+                  label: 'New School Year',
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const NewAcademicYearDialog();
+                      },
+                    );
+                  },
+                ),
+                SpeedDialChild(
+                  shape: const CircleBorder(side: BorderSide.none),
+                  child: const CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 0, 202, 231),
+                    child: Icon(Icons.calendar_today, color: Colors.white),
+                  ),
+                  label: 'Edit School Year',
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return EditSchoolYearDialog();
+                      },
+                    );
+                  },
+                ),
+                SpeedDialChild(
+                  shape: const CircleBorder(side: BorderSide.none),
+                  child: const CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 0, 223, 204),
+                    child: Icon(Icons.class_, color: Colors.white),
+                  ),
+                  label: 'New Class',
+                  onTap: () {
+                    print('New Class');
+                  },
+                ),
+                SpeedDialChild(
+                  shape: const CircleBorder(side: BorderSide.none),
+                  child: const CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 254, 138, 126),
+                    child: Icon(Icons.manage_accounts, color: Colors.white),
+                  ),
+                  label: 'Manage Course',
+                  onTap: () {
+                    print('Manage Course');
+                  },
+                ),
+              ],
             )
           : null,
       appBar: AppBar(
