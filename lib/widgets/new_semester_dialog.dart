@@ -1,20 +1,29 @@
+import 'package:emplanner/providers/courses_provider.dart';
+import 'package:emplanner/providers/schedule_provider.dart';
 import 'package:emplanner/services/schedule_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewAcademicYearDialog extends StatefulWidget {
-  const NewAcademicYearDialog({super.key});
-
+class NewSemesterDialog extends ConsumerStatefulWidget {
+  const NewSemesterDialog({super.key, required this.yearId});
+  final String yearId;
   @override
-  State<NewAcademicYearDialog> createState() => _NewAcademicYearDialogState();
+  ConsumerState<NewSemesterDialog> createState() => _NewSemesterDialogState();
 }
 
-class _NewAcademicYearDialogState extends State<NewAcademicYearDialog> {
+class _NewSemesterDialogState extends ConsumerState<NewSemesterDialog> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _startDate;
   DateTime? _endDate;
+  final TextEditingController _tenHocKyController = TextEditingController();
 
-  Future<bool> _saveYear() async {
-    return await ScheduleService.saveYears(_startDate!, _endDate!);
+  Future<bool> _saveSemester() async {
+    return await ScheduleService.saveSemester(
+      widget.yearId,
+      _tenHocKyController.text,
+      _startDate!,
+      _endDate!,
+    );
   }
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
@@ -48,7 +57,7 @@ class _NewAcademicYearDialogState extends State<NewAcademicYearDialog> {
           ),
         ),
         child: const Text(
-          'New Academic Year',
+          'New Semester',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -95,9 +104,18 @@ class _NewAcademicYearDialogState extends State<NewAcademicYearDialog> {
                 ),
               ),
               const SizedBox(height: 16.0),
-              const Text(
-                'What Are Academic Years?\n\nAn academic year and its terms are used to represent your school year and any terms (e.g., semesters, trimesters, quarters) that you may have.',
-                style: TextStyle(fontSize: 14.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  hintText: 'Enter semester name',
+                ),
+                controller: _tenHocKyController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Tên học kì không được để trống';
+                  }
+                  return null;
+                },
               ),
             ],
           ),
@@ -112,12 +130,15 @@ class _NewAcademicYearDialogState extends State<NewAcademicYearDialog> {
         ),
         ElevatedButton(
           child: const Text('Create'),
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              _saveYear();
+              _saveSemester();
+              await ref
+                  .read(semesterStateNotifierProvider.notifier)
+                  .fetchSemesters();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Created New School Year!'),
+                  content: Text('Created New Semester!'),
                   duration: Duration(seconds: 2),
                   backgroundColor: Colors.green,
                 ),

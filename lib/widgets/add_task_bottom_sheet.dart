@@ -27,7 +27,9 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
   DateTime? _selectedDate;
 
   Future<void> saveTask(NewTask task) async {
+    if (!mounted) return; // Check if the widget is still mounted
     await TaskServices.saveTask(task);
+    if (!mounted) return; // Check again after the asynchronous operation
     ref.refresh(dashboardDetailProvider);
     await ref.read(tasksStateNotifierProvider.notifier).fetchTasks();
   }

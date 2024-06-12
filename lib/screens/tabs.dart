@@ -1,3 +1,4 @@
+import 'package:emplanner/models/school_year.dart';
 import 'package:emplanner/screens/calendars.dart';
 import 'package:emplanner/screens/dashboard.dart';
 import 'package:emplanner/screens/schedules.dart';
@@ -5,6 +6,7 @@ import 'package:emplanner/screens/settings.dart';
 import 'package:emplanner/screens/tasks.dart';
 import 'package:emplanner/widgets/edit_year_dialog.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
+import 'package:emplanner/widgets/new_class_dialog.dart';
 import 'package:emplanner/widgets/new_year_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -110,7 +112,7 @@ class _TabsScreenState extends State<TabsScreen> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return EditSchoolYearDialog();
+                        return const EditAcademicYearDialog();
                       },
                     );
                   },
@@ -123,7 +125,12 @@ class _TabsScreenState extends State<TabsScreen> {
                   ),
                   label: 'New Class',
                   onTap: () {
-                    print('New Class');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CreateClassDialog();
+                      },
+                    );
                   },
                 ),
                 SpeedDialChild(
