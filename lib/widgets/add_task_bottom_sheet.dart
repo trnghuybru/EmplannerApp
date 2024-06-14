@@ -36,7 +36,7 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
 
   void submit() async {
     final newTask = NewTask(
-      courseId: _selectedCourse.id,
+      courseId: _selectedCourse.id!,
       name: _titleController.text,
       startDate: DateTime.now(),
       endDate: _selectedDate!,

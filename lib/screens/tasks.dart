@@ -1,20 +1,17 @@
-// ignore_for_file: unused_result
-
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
+import 'package:emplanner/widgets/buttons/secondary_buttons.dart';
+import 'package:emplanner/widgets/task_dialog.dart';
+import 'package:emplanner/widgets/task_item.dart';
 import 'package:emplanner/models/course.dart';
 import 'package:emplanner/models/new_task.dart';
-import 'package:emplanner/models/task.dart';
 import 'package:emplanner/providers/courses_provider.dart';
 import 'package:emplanner/providers/dashboard_provider.dart';
 import 'package:emplanner/providers/tasks_provider.dart';
 import 'package:emplanner/services/task_service.dart';
 import 'package:emplanner/widgets/add_task_bottom_sheet.dart';
-import 'package:emplanner/widgets/buttons/secondary_buttons.dart';
-import 'package:emplanner/widgets/task_dialog.dart';
-import 'package:emplanner/widgets/task_item.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class TasksScreen extends ConsumerWidget {
   const TasksScreen({super.key});
@@ -56,6 +53,7 @@ class TasksScreen extends ConsumerWidget {
     final courses = ref.watch(coursesFutureProvider);
     final selectedDate = ref.watch(selectedDateProvider);
     final filteredTasks = ref.watch(taskFilterProvider);
+    final isOverdueMode = ref.watch(overdueModeProvider);
 
     return Column(
       children: [
@@ -85,48 +83,57 @@ class TasksScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              SecondaryButton(
-                icon: Icons.add_rounded,
-                title: const Text('Add Task'),
-                onPressed: courses.when(
-                    data: (course) {
-                      return () {
-                        _openAddTaskOverLay(context, course);
-                      };
-                    },
-                    error: (e, r) {
-                      return () {};
-                    },
-                    loading: () => () {}),
+              Row(
+                children: [
+                  SecondaryButton(
+                    icon: Icons.add_rounded,
+                    title: const Text('Add Task'),
+                    onPressed: courses.when(
+                        data: (course) {
+                          return () {
+                            _openAddTaskOverLay(context, course);
+                          };
+                        },
+                        error: (e, r) {
+                          return () {};
+                        },
+                        loading: () => () {}),
+                  ),
+                  const SizedBox(width: 10),
+                  ToggleButton(
+                    isOverdueMode: isOverdueMode,
+                  ),
+                ],
               ),
             ],
           ),
         ),
-        Container(
-          margin: const EdgeInsets.only(left: 20, bottom: 15),
-          child: DatePicker(
-            DateTime.now(),
-            height: 90,
-            width: 70,
-            initialSelectedDate: selectedDate,
-            selectionColor: const Color.fromARGB(255, 250, 187, 24),
-            selectedTextColor: Colors.white,
-            dateTextStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Color.fromARGB(255, 73, 73, 73),
+        if (!isOverdueMode)
+          Container(
+            margin: const EdgeInsets.only(left: 20, bottom: 15),
+            child: DatePicker(
+              DateTime.now(),
+              height: 90,
+              width: 70,
+              initialSelectedDate: selectedDate,
+              selectionColor: const Color.fromARGB(255, 250, 187, 24),
+              selectedTextColor: Colors.white,
+              dateTextStyle: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color.fromARGB(255, 73, 73, 73),
+              ),
+              onDateChange: (selectedDate) {
+                data.when(
+                    data: (tasks) {
+                      ref.read(selectedDateProvider.notifier).state =
+                          selectedDate;
+                    },
+                    error: (e, r) {},
+                    loading: () {});
+              },
             ),
-            onDateChange: (selectedDate) {
-              data.when(
-                  data: (tasks) {
-                    ref.read(selectedDateProvider.notifier).state =
-                        selectedDate;
-                  },
-                  error: (e, r) {},
-                  loading: () {});
-            },
           ),
-        ),
         Expanded(
           child: SizedBox(
             height: 200,
@@ -216,7 +223,7 @@ class TasksScreen extends ConsumerWidget {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          // Perform complete action here, e.g., update the task status
+// Perform complete action here, e.g., update the task status
                                           Navigator.of(context).pop(true);
                                         },
                                         child: Text(
@@ -245,7 +252,7 @@ class TasksScreen extends ConsumerWidget {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          // Perform delete action here, e.g., remove the task from the database
+// Perform delete action here, e.g., remove the task from the database
                                           Navigator.of(context).pop(true);
                                         },
                                         child: const Text('Delete'),
@@ -260,7 +267,7 @@ class TasksScreen extends ConsumerWidget {
                             if (direction == DismissDirection.startToEnd) {
                               NewTask task = NewTask(
                                 courseId: filteredTasks[index].courseId,
-                                name: filteredTasks[index].taskName,
+                                name: filteredTasks[index].taskName!,
                                 startDate: DateTime.now(),
                                 endDate: filteredTasks[index].endDate!,
                                 type: filteredTasks[index].type!,
@@ -290,6 +297,24 @@ class TasksScreen extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ToggleButton extends ConsumerWidget {
+  final bool isOverdueMode;
+
+  const ToggleButton({super.key, required this.isOverdueMode});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      icon: Icon(
+        isOverdueMode ? Icons.unpublished_outlined : Icons.done,
+      ),
+      onPressed: () {
+        ref.read(overdueModeProvider.notifier).toggle();
+      },
     );
   }
 }

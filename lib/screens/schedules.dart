@@ -1,6 +1,7 @@
 import 'package:emplanner/providers/courses_provider.dart';
 import 'package:emplanner/providers/schedule_provider.dart';
 import 'package:emplanner/widgets/course_item.dart';
+import 'package:emplanner/widgets/new_course_dialog.dart';
 import 'package:emplanner/widgets/semester_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -110,11 +111,22 @@ class SchedulesScreen extends ConsumerWidget {
                       return CourseItem(
                         courseName: courses[index].name,
                         dateRange:
-                            '${dateFormat.format(courses[index].startDate)} - ${dateFormat.format(courses[index].endDate)}',
+                            '${dateFormat.format(courses[index].startDate!)} - ${dateFormat.format(courses[index].endDate!)}',
                         dayLeft: courses[index]
-                            .endDate
+                            .endDate!
                             .difference(currentDate)
                             .inDays,
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return NewSubjectDialog(
+                                course: courses[
+                                    index], // Truyền Course vào màn hình chỉnh sửa
+                              );
+                            },
+                          );
+                        },
                       );
                     });
               },

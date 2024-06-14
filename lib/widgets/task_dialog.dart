@@ -38,8 +38,8 @@ class _TaskDialogState extends ConsumerState<TaskDialog> {
   void _editTask(bool isToggleDone) async {
     if (isToggleDone) {
       NewTask task = NewTask(
-        courseId: _selectedCourse.id,
-        name: widget.task.taskName,
+        courseId: _selectedCourse.id!,
+        name: widget.task.taskName!,
         startDate: DateTime.now(),
         endDate: _selectedDate,
         type: _selectedType,
@@ -51,7 +51,7 @@ class _TaskDialogState extends ConsumerState<TaskDialog> {
       await ref.read(tasksStateNotifierProvider.notifier).fetchTasks();
     } else {
       NewTask task = NewTask(
-        courseId: _selectedCourse.id,
+        courseId: _selectedCourse.id!,
         name: _titleController.text,
         endDate: _selectedDate,
         type: _selectedType,

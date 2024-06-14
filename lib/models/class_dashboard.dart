@@ -3,7 +3,7 @@ class ClassDashboard {
   final int courseId;
   final String room;
   final String date;
-  final String dayOfWeek;
+  final String? dayOfWeek;
   final String startTime;
   final String courseName;
   final String teacher;
@@ -13,7 +13,7 @@ class ClassDashboard {
     required this.courseId,
     required this.room,
     required this.date,
-    required this.dayOfWeek,
+    this.dayOfWeek,
     required this.startTime,
     required this.courseName,
     required this.teacher,

@@ -48,6 +48,7 @@ dependencies:
   syncfusion_flutter_calendar: ^24.1.46
   flutter_speed_dial: ^7.0.0
   fluttertoast: ^8.2.6
+  flutter_colorpicker: ^1.1.0
   
 
 dev_dependencies:

@@ -1,23 +1,28 @@
-import 'package:emplanner/models/task.dart';
+import 'package:emplanner/models/exam.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TaskItem extends StatelessWidget {
-  const TaskItem({super.key, required this.task});
-  final Task task;
+class ExamItem extends StatelessWidget {
+  final Exam exam;
 
-  Color hexToColor(String code) {
-    return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  const ExamItem({Key? key, required this.exam}) : super(key: key);
+
+  Color getStatusColor() {
+    DateTime today = DateTime.now();
+    if (exam.startDate.isAfter(today) ||
+        exam.startDate.isAtSameMomentAs(today)) {
+      return Colors.blue; // Pending status color
+    } else {
+      return Colors.green; // Completed status color
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
-    DateTime endDate =
-        DateTime(task.endDate!.year, task.endDate!.month, task.endDate!.day);
     DateTime today = DateTime(now.year, now.month, now.day);
-    Duration remainingTime = endDate.difference(today);
-    String formattedDate = DateFormat('MM/dd').format(endDate);
+    Duration remainingTime = exam.startDate.difference(today);
+    String formattedDate = DateFormat('MM/dd').format(exam.startDate);
     String daysLeft = remainingTime.inDays.toString();
     String daysLeftString = daysLeft == '1' ? '1 day' : '$daysLeft days';
 
@@ -25,19 +30,15 @@ class TaskItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       height: 112,
       decoration: BoxDecoration(
-        color: task.status == 0
-            ? const Color.fromARGB(255, 242, 243, 255)
-            : Colors.grey[300],
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        color: const Color.fromARGB(255, 242, 243, 255),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
           Container(
             width: 18,
             decoration: BoxDecoration(
-              color: task.status == 0
-                  ? hexToColor(task.colorCode!)
-                  : Colors.grey[400],
+              color: getStatusColor(),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 bottomLeft: Radius.circular(20),
@@ -60,19 +61,17 @@ class TaskItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            task.taskName!,
-                            style: TextStyle(
-                              color: task.status == 0
-                                  ? const Color.fromARGB(255, 0, 0, 0)
-                                  : const Color.fromARGB(255, 113, 113, 113),
+                            exam.name,
+                            style: const TextStyle(
+                              color: Colors.black,
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            task.courseName,
+                            exam.course!.name,
                             style: const TextStyle(
-                              color: Color.fromARGB(255, 24, 10, 10),
+                              color: Colors.brown,
                               fontSize: 12.0,
                               fontWeight: FontWeight.normal,
                             ),
@@ -83,7 +82,7 @@ class TaskItem extends StatelessWidget {
                     ],
                   ),
                   const Divider(
-                    color: Color.fromARGB(29, 0, 0, 0),
+                    color: Colors.black12,
                     thickness: 1.0,
                     height: 20,
                     indent: 5,
@@ -101,13 +100,10 @@ class TaskItem extends StatelessWidget {
                                 : '$formattedDate |  $daysLeftString left',
                         style: TextStyle(
                           color: remainingTime.inDays == 0
-                              ? task.status == 1
-                                  ? Colors.grey
-                                  : Colors.green
+                              ? getStatusColor()
                               : remainingTime.inDays < 0
-                                  ? Colors.red // Màu đỏ cho "Overdue"
-                                  : const Color.fromARGB(255, 113, 113,
-                                      113), // Màu mặc định cho trường hợp khác
+                                  ? Colors.red
+                                  : Colors.grey[600],
                           fontSize: 12.0,
                           fontWeight: FontWeight.bold,
                         ),

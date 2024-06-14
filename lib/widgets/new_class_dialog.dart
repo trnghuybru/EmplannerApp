@@ -1,4 +1,8 @@
+import 'package:emplanner/models/school_class.dart';
+import 'package:emplanner/providers/calendar_provider.dart';
 import 'package:emplanner/providers/courses_provider.dart';
+import 'package:emplanner/providers/dashboard_provider.dart';
+import 'package:emplanner/services/schedule_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +21,7 @@ class _CreateClassDialogState extends ConsumerState<CreateClassDialog> {
   DateTime? _selectedDate;
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
-  final Map<String, bool> _daysOfWeek =  {
+  final Map<String, bool> _daysOfWeek = {
     "Mon": false,
     "Tue": false,
     "Wed": false,
@@ -26,8 +30,6 @@ class _CreateClassDialogState extends ConsumerState<CreateClassDialog> {
     "Sat": false,
     "Sun": false,
   };
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -168,8 +170,45 @@ class _CreateClassDialogState extends ConsumerState<CreateClassDialog> {
     }
   }
 
-  void _saveClass() {
-    
+  String _generateDaysOfWeekString() {
+    // Map of shortened day names to full names
+    final Map<String, String> fullDayNames = {
+      "Mon": "Monday",
+      "Tue": "Tuesday",
+      "Wed": "Wednesday",
+      "Thu": "Thursday",
+      "Fri": "Friday",
+      "Sat": "Saturday",
+      "Sun": "Sunday",
+    };
+
+    List<String> selectedDays = [];
+    _daysOfWeek.forEach((day, isSelected) {
+      if (isSelected) {
+        selectedDays.add(fullDayNames[
+            day]!); // Add full day names instead of shortened names
+      }
+    });
+    return selectedDays.join(',');
+  }
+
+  void _saveClass() async {
+    // Generate the days of week string
+    String daysOfWeekString = _generateDaysOfWeekString();
+
+    SchoolClass cl = SchoolClass(
+      room: _room,
+      startTime: _startTime!,
+      endTime: _endTime!,
+      date: _selectedDate,
+      // Add the daysOfWeekString to the class (assuming it has a corresponding field)
+      dayOfWeek: daysOfWeekString,
+    );
+    await ScheduleService.saveClass(cl, _selectedSubject!);
+    await ref
+        .read(calendarStateNotifierProvider.notifier)
+        .fetchCalendarClasses();
+    ref.refresh(dashboardDataProvider);
     Navigator.of(context).pop();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:emplanner/models/calendar_class.dart';
-import 'package:emplanner/providers/tasks_provider.dart';
 import 'package:emplanner/services/calendar_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,7 +12,7 @@ class CalendarNotifier extends StateNotifier<List<CalendarClass>> {
       final classes = await CalendarService.fetchClass();
       state = classes;
     } catch (e) {
-      state = [];
+      throw Exception(e);
     }
   }
 }

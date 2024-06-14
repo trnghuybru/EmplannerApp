@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class SchoolClass {
   const SchoolClass({
-    required this.id,
     required this.room,
     this.date,
     this.dayOfWeek,
@@ -10,7 +9,6 @@ class SchoolClass {
     this.endTime,
   });
 
-  final int id;
   final String room;
   final DateTime? date;
   final String? dayOfWeek;
@@ -19,7 +17,6 @@ class SchoolClass {
 
   factory SchoolClass.fromJson(Map<String, dynamic> json) {
     return SchoolClass(
-      id: json['id'],
       room: json['room'],
       date: json['date'] != null ? DateTime.parse(json['date']) : null,
       dayOfWeek: json['dayOfWeek'],
@@ -38,14 +35,11 @@ class SchoolClass {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'room': room,
-      'date': date?.toIso8601String(),
+      'date': date?.toIso8601String().split('T')[0],
       'dayOfWeek': dayOfWeek,
-      'startTime': {'hour': startTime.hour, 'minute': startTime.minute},
-      'endTime': endTime != null
-          ? {'hour': endTime!.hour, 'minute': endTime!.minute}
-          : null,
+      'startTime': "${startTime.hour},${startTime.minute}",
+      'endTime': endTime != null ? "${endTime!.hour}:${endTime!.minute}" : null,
     };
   }
 }

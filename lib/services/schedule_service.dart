@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:emplanner/models/course.dart';
+import 'package:emplanner/models/school_class.dart';
 import 'package:emplanner/models/school_year.dart';
 import 'package:emplanner/models/semester.dart';
 import 'package:emplanner/services/auth_service.dart';
@@ -112,7 +114,6 @@ class ScheduleService {
     DateTime endDate,
   ) async {
     String? token = await AuthService.getToken();
-    print(startDate.toIso8601String());
     try {
       final url = Uri.http('10.0.2.2:8000', 'api/schedules/store_semester');
       final response = await http.post(
@@ -160,6 +161,95 @@ class ScheduleService {
         return true; // Cập nhật thành công
       } else {
         print('Failed to update schoolYear: ${response.reasonPhrase}');
+        return false; // Cập nhật không thành công
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e'); // Ném ngoại lệ nếu có lỗi xảy ra
+    }
+  }
+
+  static Future<bool> saveClass(SchoolClass cl, String courseId) async {
+    String? token = await AuthService.getToken();
+    print(cl.dayOfWeek);
+    try {
+      final url = Uri.http('10.0.2.2:8000', 'api/schedules/store_class');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({
+          "course_id": courseId,
+          "room": cl.room,
+          "start_time": "${cl.startTime.hour}:${cl.startTime.minute}",
+          "end_time": "${cl.endTime!.hour}:${cl.endTime!.minute}",
+          "day_of_week": cl.dayOfWeek,
+          "date": cl.date == null
+              ? cl.date
+              : cl.date!.toIso8601String().split('T')[0],
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to save class: ${response.reasonPhrase}');
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  static Future<bool> saveCourse(Course cl) async {
+    String? token = await AuthService.getToken();
+    print(cl.toJson());
+    try {
+      final url = Uri.http('10.0.2.2:8000', 'api/schedules/store_course');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode(cl.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to save course: ${response.reasonPhrase}');
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+  static Future<bool> updateCourse(Course course) async {
+    String? token = await AuthService.getToken();
+    print(course.toJson());
+    try {
+      final url =
+          Uri.http('10.0.2.2:8000', 'api/schedules/update_course/${course.id}');
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode(course.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        return true; // Cập nhật thành công
+      } else {
+        print('Failed to update Course: ${response.reasonPhrase}');
         return false; // Cập nhật không thành công
       }
     } catch (e) {

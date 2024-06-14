@@ -1,6 +1,6 @@
 class Task {
   int id;
-  String taskName;
+  String? taskName;
   String? description;
   DateTime? endDate;
   int status;
@@ -14,10 +14,11 @@ class Task {
   DateTime? semesterEndDate;
   DateTime? schoolYearsStartDate;
   DateTime? schoolYearsEndDate;
+  String? name;
 
   Task({
     required this.id,
-    required this.taskName,
+    this.taskName,
     this.description,
     this.endDate,
     required this.status,
@@ -31,24 +32,36 @@ class Task {
     this.semesterEndDate,
     this.schoolYearsStartDate,
     this.schoolYearsEndDate,
+    this.name,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'],
       taskName: json['task_name'],
+      name: json['name'],
       description: json['description'],
-      endDate: DateTime.parse(json['end_date']),
+      endDate:
+          json['end_date'] != null ? DateTime.parse(json['end_date']) : null,
       status: json['status'],
       type: json['type'],
+      examId: json['exam_id'],
       courseId: json['course_id'],
       courseName: json['course_name'],
       colorCode: json['color_code'],
       semesterName: json['semester_name'],
-      semesterStartDate: DateTime.parse(json['semester_start_date']),
-      semesterEndDate: DateTime.parse(json['semester_end_date']),
-      schoolYearsStartDate: DateTime.parse(json['school_years_start_date']),
-      schoolYearsEndDate: DateTime.parse(json['school_years_end_date']),
+      semesterStartDate: json['semester_start_date'] != null
+          ? DateTime.parse(json['semester_start_date'])
+          : null,
+      semesterEndDate: json['semester_end_date'] != null
+          ? DateTime.parse(json['semester_end_date'])
+          : null,
+      schoolYearsStartDate: json['school_years_start_date'] != null
+          ? DateTime.parse(json['school_years_start_date'])
+          : null,
+      schoolYearsEndDate: json['school_years_end_date'] != null
+          ? DateTime.parse(json['school_years_end_date'])
+          : null,
     );
   }
 
