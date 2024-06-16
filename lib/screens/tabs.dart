@@ -1,9 +1,8 @@
-import 'package:emplanner/models/school_year.dart';
 import 'package:emplanner/screens/calendars.dart';
 import 'package:emplanner/screens/dashboard.dart';
 import 'package:emplanner/screens/exams.dart';
 import 'package:emplanner/screens/schedules.dart';
-import 'package:emplanner/screens/settings.dart';
+import 'package:emplanner/screens/profile.dart';
 import 'package:emplanner/screens/tasks.dart';
 import 'package:emplanner/widgets/edit_year_dialog.dart';
 import 'package:emplanner/widgets/main_drawer.dart';
@@ -12,6 +11,7 @@ import 'package:emplanner/widgets/new_course_dialog.dart';
 import 'package:emplanner/widgets/new_year_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -23,69 +23,62 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
   late Widget activePage;
-
-  void _selectPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
-  }
-
-  void _setScreen(String indentifier) {
-    Navigator.of(context).pop();
-    //man hinh setting
-    if (indentifier == 'settings') {
-      print("setting");
-      setState(() {
-        activePage = const SettingsScreen();
-      });
-    }
-    //man hinh schedules
-  }
+  late String activePageTitle;
 
   @override
   void initState() {
     super.initState();
-    activePage = const DashboardScreen();
+    _updateActivePage(_selectedPageIndex);
+  }
+
+  void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+      _updateActivePage(index);
+    });
+  }
+
+  void _setScreen(String identifier) {
+    if (identifier == 'profile') {
+      Navigator.of(context).pop();
+      setState(() {
+        activePage = const ProfileScreen();
+        activePageTitle = 'Profile';
+      });
+    }
+  }
+
+  void _updateActivePage(int index) {
+    switch (index) {
+      case 0:
+        activePage = const DashboardScreen();
+        activePageTitle = 'Dashboard';
+        break;
+      case 1:
+        activePage = const CalendarScreen();
+        activePageTitle = 'Calendar';
+        break;
+      case 2:
+        activePage = const TasksScreen();
+        activePageTitle = 'Tasks';
+        break;
+      case 3:
+        activePage = const ExamsScreen();
+        activePageTitle = 'Exams';
+        break;
+      case 4:
+        activePage = const SchedulesScreen();
+        activePageTitle = 'Schedules';
+        break;
+      default:
+        activePage = const DashboardScreen();
+        activePageTitle = 'Dashboard';
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var activePageTitle = 'Dashboard';
-
-    if (_selectedPageIndex == 0) {
-      setState(() {
-        activePage = const DashboardScreen();
-      });
-    }
-
-    if (_selectedPageIndex == 1) {
-      setState(() {
-        activePageTitle = 'Calendar';
-        activePage = const CalendarScreen();
-      });
-    }
-
-    if (_selectedPageIndex == 2) {
-      setState(() {
-        activePageTitle = 'Task';
-        activePage = const TasksScreen();
-      });
-    }
-
-    if (_selectedPageIndex == 3) {
-      setState(() {
-        activePageTitle = 'Schedules';
-        activePage = const SchedulesScreen();
-      });
-    }
-
-    if (_selectedPageIndex == 4) {
-      setState(() {
-        activePageTitle = 'Exams';
-        activePage = const ExamsScreen();
-      });
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: activePageTitle == 'Schedules'
@@ -189,67 +182,85 @@ class _TabsScreenState extends State<TabsScreen> {
         onSelectScreen: _setScreen,
       ),
       body: activePage,
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectPage,
-        currentIndex: _selectedPageIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              color: Color.fromARGB(255, 212, 225, 245),
-            ),
-            activeIcon: Icon(
-              Icons.home_rounded,
-              color: Color.fromARGB(255, 250, 187, 24),
-            ),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 30,
+              offset: Offset(0, 20),
+            )
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.calendar_month_outlined,
-              color: Color.fromARGB(255, 212, 225, 245),
-            ),
-            activeIcon: Icon(
-              Icons.calendar_month_rounded,
-              color: Color.fromARGB(255, 250, 187, 24),
-            ),
-            label: 'Calendar',
+          child: BottomNavigationBar(
+            onTap: _selectPage,
+            currentIndex: _selectedPageIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: FaIcon(
+                  FontAwesomeIcons.house,
+                  color: Color.fromARGB(255, 212, 225, 245),
+                ),
+                activeIcon: FaIcon(
+                  FontAwesomeIcons.house,
+                  color: Colors.amber,
+                ),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(
+                  FontAwesomeIcons.calendar,
+                  color: Color.fromARGB(255, 212, 225, 245),
+                ),
+                activeIcon: FaIcon(
+                  FontAwesomeIcons.solidCalendar,
+                  color: Colors.amber,
+                ),
+                label: 'Calendar',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(
+                  FontAwesomeIcons.listCheck,
+                  color: Color.fromARGB(255, 212, 225, 245),
+                ),
+                activeIcon: FaIcon(
+                  FontAwesomeIcons.listCheck,
+                  color: Colors.amber,
+                ),
+                label: 'Tasks',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(
+                  FontAwesomeIcons.spellCheck,
+                  color: Color.fromARGB(255, 212, 225, 245),
+                ),
+                activeIcon: FaIcon(
+                  FontAwesomeIcons.spellCheck,
+                  color: Colors.amber,
+                ),
+                label: 'Exams',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(
+                  FontAwesomeIcons.calendarPlus,
+                  color: Color.fromARGB(255, 212, 225, 245),
+                ),
+                activeIcon: FaIcon(
+                  FontAwesomeIcons.solidCalendarPlus,
+                  color: Colors.amber,
+                ),
+                label: 'Schedules',
+              ),
+            ],
+            showSelectedLabels: false,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.av_timer_outlined,
-              color: Color.fromARGB(255, 212, 225, 245),
-            ),
-            activeIcon: Icon(
-              Icons.av_timer_rounded,
-              color: Color.fromARGB(255, 250, 187, 24),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.note_alt_rounded,
-              color: Color.fromARGB(255, 212, 225, 245),
-            ),
-            activeIcon: Icon(
-              Icons.note_alt_rounded,
-              color: Color.fromARGB(255, 250, 187, 24),
-            ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outlined,
-              color: Color.fromARGB(255, 212, 225, 245),
-            ),
-            activeIcon: Icon(
-              Icons.person_rounded,
-              color: Color.fromARGB(255, 250, 187, 24),
-            ),
-            label: '',
-          ),
-        ],
-        showSelectedLabels: false,
+        ),
       ),
     );
   }

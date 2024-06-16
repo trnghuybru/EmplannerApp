@@ -5,7 +5,9 @@ import 'package:emplanner/models/school_class.dart';
 import 'package:emplanner/models/school_year.dart';
 import 'package:emplanner/models/semester.dart';
 import 'package:emplanner/services/auth_service.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class ScheduleService {
   static Future<List<Semester>> getAllSemesters() async {
@@ -171,7 +173,7 @@ class ScheduleService {
 
   static Future<bool> saveClass(SchoolClass cl, String courseId) async {
     String? token = await AuthService.getToken();
-    print(cl.dayOfWeek);
+    print('${cl.dayOfWeek} S');
     try {
       final url = Uri.http('10.0.2.2:8000', 'api/schedules/store_class');
       final response = await http.post(
@@ -184,12 +186,12 @@ class ScheduleService {
         body: json.encode({
           "course_id": courseId,
           "room": cl.room,
-          "start_time": "${cl.startTime.hour}:${cl.startTime.minute}",
-          "end_time": "${cl.endTime!.hour}:${cl.endTime!.minute}",
+          "start_time": formatTimeOfDay(cl.startTime),
+          "end_time": formatTimeOfDay(cl.endTime!),
           "day_of_week": cl.dayOfWeek,
           "date": cl.date == null
-              ? cl.date
-              : cl.date!.toIso8601String().split('T')[0],
+              ? null
+              : DateFormat('yyyy-MM-dd').format(cl.date!),
         }),
       );
 
@@ -257,4 +259,11 @@ class ScheduleService {
       throw Exception('Error: $e'); // Ném ngoại lệ nếu có lỗi xảy ra
     }
   }
+}
+
+String formatTimeOfDay(TimeOfDay tod) {
+  final now = DateTime.now();
+  final dt = DateTime(now.year, now.month, now.day, tod.hour, tod.minute);
+  final format = DateFormat('HH:mm'); // 'HH:mm' format
+  return format.format(dt);
 }

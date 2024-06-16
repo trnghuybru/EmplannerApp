@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:emplanner/models/course.dart';
 import 'package:emplanner/models/exam.dart';
+import 'package:emplanner/providers/dashboard_provider.dart';
 import 'package:emplanner/providers/exam_provider.dart';
 import 'package:emplanner/services/exam_sevice.dart';
 import 'package:flutter/material.dart';
@@ -180,6 +181,7 @@ class _NewExamDialogState extends ConsumerState<NewExamDialog> {
               onPressed: () {
                 _createExam();
                 ref.read(examsStateNotifierProvider.notifier).fetchExams();
+                ref.refresh(dashboardDataProvider);
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

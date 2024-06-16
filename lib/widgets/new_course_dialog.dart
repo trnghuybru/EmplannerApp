@@ -1,4 +1,7 @@
+import 'package:emplanner/providers/calendar_provider.dart';
 import 'package:emplanner/providers/courses_provider.dart';
+import 'package:emplanner/providers/dashboard_provider.dart';
+import 'package:emplanner/providers/tasks_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,6 +92,8 @@ class _NewSubjectDialogState extends ConsumerState<NewSubjectDialog> {
       await ScheduleService.saveCourse(course);
     } else {
       await ScheduleService.updateCourse(course);
+      ref.read(calendarStateNotifierProvider.notifier).fetchCalendarClasses();
+      ref.read(tasksStateNotifierProvider.notifier).fetchTasks();
     }
     return true;
   }

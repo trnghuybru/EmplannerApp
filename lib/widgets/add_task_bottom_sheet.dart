@@ -225,6 +225,9 @@ class _NewTaskBottomSheetState extends ConsumerState<NewTaskBottomSheet> {
                         icon: Icons.add_rounded,
                         onPressed: () {
                           submit();
+                          ref
+                              .read(tasksStateNotifierProvider.notifier)
+                              .fetchTasks();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Task added successfully!'),

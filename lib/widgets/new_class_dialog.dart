@@ -185,8 +185,7 @@ class _CreateClassDialogState extends ConsumerState<CreateClassDialog> {
     List<String> selectedDays = [];
     _daysOfWeek.forEach((day, isSelected) {
       if (isSelected) {
-        selectedDays.add(fullDayNames[
-            day]!); // Add full day names instead of shortened names
+        selectedDays.add(fullDayNames[day]!);
       }
     });
     return selectedDays.join(',');
@@ -195,13 +194,12 @@ class _CreateClassDialogState extends ConsumerState<CreateClassDialog> {
   void _saveClass() async {
     // Generate the days of week string
     String daysOfWeekString = _generateDaysOfWeekString();
-
+    print(daysOfWeekString);
     SchoolClass cl = SchoolClass(
       room: _room,
       startTime: _startTime!,
       endTime: _endTime!,
       date: _selectedDate,
-      // Add the daysOfWeekString to the class (assuming it has a corresponding field)
       dayOfWeek: daysOfWeekString,
     );
     await ScheduleService.saveClass(cl, _selectedSubject!);

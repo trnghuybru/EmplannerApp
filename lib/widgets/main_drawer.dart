@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key, required this.onSelectScreen});
@@ -73,20 +74,20 @@ class MainDrawer extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(14)),
                   ),
                   child: ListTile(
-                    leading: Icon(
-                      Icons.calendar_month,
-                      size: 16,
+                    leading: FaIcon(
+                      FontAwesomeIcons.person,
+                      size: 23,
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                     title: Text(
-                      'Schedules',
+                      'Profile',
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             color: Theme.of(context).colorScheme.onBackground,
                             fontSize: 16,
                           ),
                     ),
                     onTap: () {
-                      onSelectScreen('schedules');
+                      onSelectScreen('profile');
                     },
                   ),
                 ),
@@ -94,23 +95,25 @@ class MainDrawer extends StatelessWidget {
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.black,
-                    borderRadius: BorderRadius.all(Radius.circular(14)),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(14),
+                    ),
                   ),
                   child: ListTile(
                     leading: Icon(
-                      Icons.settings_rounded,
+                      Icons.logout,
                       size: 16,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     title: Text(
-                      'Settings',
+                      'Log out',
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary,
                             fontSize: 16,
                           ),
                     ),
                     onTap: () {
-                      onSelectScreen('settings');
+                      onSelectScreen('logout');
                     },
                   ),
                 ),
